@@ -31,9 +31,9 @@ from any folder or host:
 
 - **XAMPP (this machine):** run `npm run build`, start Apache, open
   http://localhost/3D/dist/ (the project already lives in `htdocs/3D`).
-- **GitHub Pages (automatic):** `.github/workflows/deploy.yml` runs the tests, builds and publishes
-  on every push to `main`. One-time setup: repository **Settings → Pages → Source: GitHub Actions**.
-  The site is served at https://ilyesbourouba.github.io/3D/.
+- **GitHub Pages:** run `npm run deploy`. It builds and publishes `dist/` to the `gh-pages`
+  branch (`main` is untouched). One-time setup: repository **Settings → Pages → Source: Deploy from
+  a branch → `gh-pages` / `(root)`**. The site is served at https://ilyesbourouba.github.io/3D/.
 - **Any static host** (Netlify, Vercel, GitHub Pages, S3, Apache/Nginx): upload the _contents_ of
   `dist/`. No rewrite rules needed (single page, no client-side routes).
 - Total size ≈ 2.4 MB (≈ 0.6 MB gzipped JS); all textures are generated in the browser, so there

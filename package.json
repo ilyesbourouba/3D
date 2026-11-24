@@ -11,7 +11,8 @@
     "test:walk": "tsx tests/walkRoutes.test.ts",
     "test:data": "tsx tests/data.test.ts",
     "test": "npm run test:walk && npm run test:data && npm run test:nav",
-    "test:nav": "tsx tests/navigation.test.ts"
+    "test:nav": "tsx tests/navigation.test.ts",
+    "deploy": "node scripts/deploy-pages.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
