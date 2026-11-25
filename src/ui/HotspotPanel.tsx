@@ -11,7 +11,7 @@ function roomName(h: HotspotInfo) {
     return HOUSE.rooms.find((r) => r.id === p?.room)?.name ?? ''
   }
   const [x, y, z] = h.target.box
-  return roomAt(y > 3.6 ? 1 : 0, x, z)?.name ?? (z > 7 ? 'Terrace & Pool' : 'Villa Aurelia')
+  return roomAt(y > 3.6 ? 1 : 0, x, z)?.name ?? (z > 7 ? 'Terrace & Pool' : 'Promotion Rahmouni')
 }
 
 /** Elegant information card for the selected object (side panel on desktop, sheet on mobile). */

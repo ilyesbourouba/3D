@@ -33,7 +33,7 @@ export function HelpOverlay() {
           <div>
             <p className="text-[10px] tracking-[0.42em] text-gold-soft/90 uppercase">Guide</p>
             <h2 id="help-title" className="mt-1 font-display text-3xl text-bone">
-              Exploring Villa Aurelia
+              Exploring Promotion Rahmouni
             </h2>
           </div>
           <button onClick={() => setOpen(false)} aria-label="Close" className="grid h-8 w-8 place-items-center rounded-full text-bone/70 hover:bg-bone/10 hover:text-bone">

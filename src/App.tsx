@@ -54,7 +54,7 @@ export function App() {
   }, [])
 
   return (
-    <main className="fixed inset-0 select-none" aria-label="Villa Aurelia — interactive 3D visit">
+    <main className="fixed inset-0 select-none" aria-label="Promotion Rahmouni — interactive 3D visit">
       {assetsReady && (
         <Suspense fallback={null}>
           <Experience />

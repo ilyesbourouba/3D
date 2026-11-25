@@ -30,7 +30,7 @@ export function LoadingScreen() {
         </svg>
         <div>
           <p className="text-[11px] tracking-[0.5em] text-sand/70 uppercase">Private Residence</p>
-          <h1 className="mt-3 font-display text-5xl font-normal tracking-wide text-bone sm:text-6xl">Villa Aurelia</h1>
+          <h1 className="mt-3 font-display text-5xl font-normal tracking-wide text-bone sm:text-6xl">Promotion Rahmouni</h1>
         </div>
         <div className="mt-4 w-64 sm:w-80">
           <div className="relative h-px w-full overflow-hidden bg-bone/10">

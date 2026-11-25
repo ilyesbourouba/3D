@@ -11,7 +11,7 @@ export function ExteriorPanel() {
       <section className="rise-in pointer-events-none fixed bottom-0 left-0 z-10 max-w-xl p-5 pb-8 sm:p-10 sm:pb-12">
         <p className="text-[10px] tracking-[0.45em] text-gold-soft/90 uppercase sm:text-[11px]">Mediterranean Coast · Private Residence</p>
         <h1 className="mt-3 font-display text-5xl leading-[0.95] font-normal text-bone drop-shadow-[0_2px_18px_rgba(0,0,0,0.35)] sm:text-7xl">
-          Villa Aurelia
+          Promotion Rahmouni
         </h1>
         <p className="mt-4 max-w-md text-[13px] leading-relaxed text-bone/80 sm:text-sm">
           Travertine, oak and glass composed around light. Two levels, three suites and a pool terrace facing the sea.

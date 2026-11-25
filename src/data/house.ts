@@ -1,7 +1,7 @@
 import type { HouseData, Level, Opening, Room, Slab, Wall, Railing, Stair } from './types'
 
 /**
- * VILLA AURELIA — the single source of truth for the building.
+ * PROMOTION RAHMOUNI — the single source of truth for the building.
  * See README §3 for the plans. All coordinates in metres (x east, z south, y up).
  */
 
