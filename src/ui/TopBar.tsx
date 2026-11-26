@@ -35,8 +35,8 @@ export function TopBar() {
           <path d="M5 26 16 6l11 20" fill="none" stroke="currentColor" strokeWidth="1.6" />
         </svg>
         <div className="leading-none">
-          <div className="text-[12px] font-semibold tracking-[0.42em] text-bone">AURELIA</div>
-          <div className="mt-1 text-[9px] tracking-[0.36em] text-bone/55 uppercase">Architecture</div>
+          <div className="text-[12px] font-semibold tracking-[0.42em] text-bone">RAHMOUNI</div>
+          <div className="mt-1 text-[9px] tracking-[0.36em] text-bone/55 uppercase">Promotion</div>
         </div>
       </div>
 
