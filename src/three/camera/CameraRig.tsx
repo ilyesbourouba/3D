@@ -55,11 +55,11 @@ function configureInteriorOrbit(c: CameraControlsImpl) {
   c.smoothTime = 0.25
   c.draggingSmoothTime = 0.12
   c.mouseButtons.left = ACTION.ROTATE
-  c.mouseButtons.right = ACTION.NONE
+  c.mouseButtons.right = ACTION.TRUCK // right-drag moves around the room (walls still stop the camera)
   c.mouseButtons.middle = ACTION.DOLLY
   c.mouseButtons.wheel = ACTION.DOLLY
   c.touches.one = ACTION.TOUCH_ROTATE
-  c.touches.two = ACTION.TOUCH_DOLLY
+  c.touches.two = ACTION.TOUCH_DOLLY_TRUCK
   c.touches.three = ACTION.NONE
   c.colliderMeshes = cameraColliders
 }
@@ -67,7 +67,6 @@ function configureInteriorOrbit(c: CameraControlsImpl) {
 /**
  * Owns the camera outside the walking mode: orbit controls around the villa, scripted
  * cinematic flights between phases, the interior orbit view, and an idle drift.
- * While walking inside, CameraControls is disabled and WalkController drives the camera.
  */
 export function CameraRig() {
   const controls = useRef<CameraControlsImpl>(null)
@@ -76,6 +75,7 @@ export function CameraRig() {
   const camera = useThree((s) => s.camera)
   const phase = useAppStore((s) => s.phase)
   const navMode = useAppStore((s) => s.navMode)
+  const poseVersion = useAppStore((s) => s.poseVersion)
   const sceneReady = useAppStore((s) => s.sceneReady)
   const prevPhase = useRef<Phase>(phase)
 
@@ -142,12 +142,11 @@ export function CameraRig() {
     if (phase === 'entering') {
       c.enabled = false
       startFlight(enterPath(pos, c.getTarget(new THREE.Vector3())), 8.5, () => {
-        // hand the camera to the first-person walker
-        useAppStore.setState({ navMode: 'walk', currentRoomId: 'hall', phase: 'interior' })
+        // land in the hall; the interior orbit view takes over
+        useAppStore.setState({ currentRoomId: 'hall', phase: 'interior' })
       })
     } else if (phase === 'exiting') {
       c.enabled = false
-      useAppStore.setState({ navMode: 'walk' })
       startFlight(exitPath(pos, target), 7.5, () => {
         configureOrbit(c)
         c.enabled = true
@@ -173,7 +172,7 @@ export function CameraRig() {
       c.enabled = false
       c.colliderMeshes = []
     }
-  }, [navMode, phase])
+  }, [navMode, phase, poseVersion])
 
   useFrame((_, dt) => {
     const c = controls.current

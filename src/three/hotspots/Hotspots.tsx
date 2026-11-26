@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef } from 'react'
 import * as THREE from 'three'
 import { FURNITURE } from '../../data/furniture'
+import { CONTEMPORARY_HOTSPOTS } from '../../data/livingLayouts'
 import { HOTSPOTS, hotspotById } from '../../data/hotspots'
 import { LEVELS } from '../../data/house'
 import { useAppStore } from '../../store/useAppStore'
@@ -72,7 +73,8 @@ function Marker({ anchor, material }: { anchor: Anchor; material: THREE.SpriteMa
     const st = useAppStore.getState()
     const d = camera.position.distanceTo(anchor.pos)
     const sameFloor = Math.abs(camera.position.y - anchor.pos.y) < 2.8
-    const candidate = st.phase === 'interior' && d < MARKER_RANGE && sameFloor && st.activeHotspot !== anchor.id
+    const shown = !CONTEMPORARY_HOTSPOTS.has(anchor.id) || st.livingStyle === 'contemporary'
+    const candidate = shown && st.phase === 'interior' && d < MARKER_RANGE && sameFloor && st.activeHotspot !== anchor.id
     // markers draw on top of everything (so glass never hides them); walls hide them instead,
     // using a line-of-sight check a few times per second
     los.current.t -= dt

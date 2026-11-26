@@ -43,25 +43,23 @@ export function HelpOverlay() {
         <div className="mt-6 grid gap-8 text-[13px] sm:grid-cols-2">
           <section>
             <h3 className="mb-2 text-[10px] tracking-[0.32em] text-bone/50 uppercase">Keyboard & mouse</h3>
-            <Row keys={['W', 'A', 'S', 'D']} label="Walk" />
-            <Row keys={['↑', '←', '↓', '→']} label="Walk (arrows)" />
-            <Row keys={['Shift']} label="Run" />
-            <Row keys={['Wheel']} label="Step forward / back" />
-            <Row keys={['Click']} label="Capture mouse to look" />
-            <Row keys={['Esc']} label="Release mouse / close" />
+            <Row keys={['Drag']} label="Look around" />
+            <Row keys={['Right-drag']} label="Move around the room" />
+            <Row keys={['Wheel']} label="Zoom in / out" />
+            <Row keys={['Click']} label="Open a ◉ marker" />
+            <Row keys={['Esc']} label="Close" />
             <Row keys={['M']} label="Map & rooms" />
-            <Row keys={['V']} label="Orbit ⇄ walk view" />
             <Row keys={['F']} label="Fullscreen" />
             <Row keys={['H']} label="This guide" />
           </section>
           <section>
             <h3 className="mb-2 text-[10px] tracking-[0.32em] text-bone/50 uppercase">Touch</h3>
-            <p className="py-1.5 text-bone/75">Left thumb: virtual joystick to walk.</p>
-            <p className="py-1.5 text-bone/75">Drag anywhere else to look around.</p>
+            <p className="py-1.5 text-bone/75">Drag with one finger to look around.</p>
+            <p className="py-1.5 text-bone/75">Pinch to zoom, drag with two fingers to move.</p>
             <p className="py-1.5 text-bone/75">Tap a ◉ marker to learn about an object.</p>
             <h3 className="mt-5 mb-2 text-[10px] tracking-[0.32em] text-bone/50 uppercase">Good to know</h3>
-            <p className="py-1.5 text-bone/75">Pick a room on the map and you will be walked there — any key or joystick move takes back control.</p>
-            <p className="py-1.5 text-bone/75">Orbit view circles the spot in front of you without passing through walls.</p>
+            <p className="py-1.5 text-bone/75">Pick a room on the map to go straight there.</p>
+            <p className="py-1.5 text-bone/75">The camera circles the room without passing through walls.</p>
           </section>
         </div>
       </div>

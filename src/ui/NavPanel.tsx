@@ -7,7 +7,7 @@ import { Minimap } from './Minimap'
 
 /**
  * Navigation panel: floor selector, interactive plan and the room list.
- * Choosing a room walks you there (from outside, it flies you in first).
+ * Choosing a room takes you there (from outside, it flies you in first).
  */
 export function NavPanel() {
   const open = useAppStore((s) => s.navOpen)
@@ -82,7 +82,7 @@ export function NavPanel() {
             <Minimap level={level} onPick={pick} />
           </div>
           <p className="mt-2 px-1 text-[10px] tracking-[0.1em] text-bone/45">
-            {outside ? 'Choose a room to fly in and walk there.' : 'Click a room on the plan or below to walk there.'}
+            {outside ? 'Choose a room to fly in and visit it.' : 'Click a room on the plan or below to go there.'}
           </p>
 
           <ul className="mt-2 grid max-h-[28vh] grid-cols-2 gap-1 overflow-y-auto">

@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { mat } from './materials'
+import type { LivingStyle } from '../../data/livingLayouts'
 import { tex, type TextureName } from './textures'
 
 /**
@@ -49,7 +50,7 @@ const fabric = (color: string, roughness = 1, sheen = 0.3): Surface => ({ tex: '
 export const LIVING_STYLES = {
   contemporary: {
     name: 'Contemporary',
-    description: 'Travertine, bouclé and cognac leather',
+    description: 'L-shaped bouclé sofa, travertine drums, leather chairs',
     feature: { tex: 'stone', color: '#ffffff', roughness: 0.86 },
     sofa: fabric('#ece6da', 1, 0.4),
     chair: { color: '#8a5434', roughness: 0.48, clearcoat: 0.25 },
@@ -59,7 +60,7 @@ export const LIVING_STYLES = {
   },
   scandinavian: {
     name: 'Scandinavian',
-    description: 'Painted walls, pale oak and soft linen',
+    description: 'Two facing linen sofas, pale oak, painted walls',
     feature: 'paint',
     sofa: fabric('#cfcbc4', 0.95, 0.2),
     chair: fabric('#d8c8ae', 1, 0.3),
@@ -69,7 +70,7 @@ export const LIVING_STYLES = {
   },
   industrial: {
     name: 'Industrial',
-    description: 'Raw concrete, black steel and dark leather',
+    description: 'Low sofa and chaise, concrete block table, black steel',
     feature: { tex: 'concrete', color: '#b8b4ae', roughness: 0.9 },
     sofa: fabric('#4d4a47', 1, 0.3),
     chair: { color: '#4a2e1e', roughness: 0.42, clearcoat: 0.3 },
@@ -79,7 +80,7 @@ export const LIVING_STYLES = {
   },
   classic: {
     name: 'Classic luxury',
-    description: 'Marble, emerald velvet and brass',
+    description: 'Symmetrical salon: velvet pair, marble table, brass globes',
     feature: { tex: 'marble', color: '#ffffff', roughness: 1.9 },
     sofa: fabric('#3e5a4a', 0.8, 0.9),
     chair: fabric('#8c4a36', 0.8, 0.9),
@@ -87,8 +88,8 @@ export const LIVING_STYLES = {
     table: { tex: 'marble', repeat: 0.8, color: '#ffffff', roughness: 1.5 },
     rug: { tex: 'rug', color: '#c9b08e', roughness: 1 },
   },
-} satisfies Record<string, StyleDef>
-export type LivingStyle = keyof typeof LIVING_STYLES
+} satisfies Record<LivingStyle, StyleDef>
+export type { LivingStyle }
 
 /** Re-tiled copies of a texture set for furniture UVs (created once per name + repeat). */
 const retiledCache = new Map<string, { map?: THREE.Texture; normalMap?: THREE.Texture; roughnessMap?: THREE.Texture }>()

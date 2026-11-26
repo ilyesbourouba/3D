@@ -233,3 +233,53 @@ export function Plant({ scale = 0.42 }: { scale?: number }) {
     </group>
   )
 }
+
+/* ------------------------------------------------------- living designs */
+
+/**
+ * Low lounge table for the living room designs: a top on four slim legs, a solid block, or a
+ * round pedestal table. Top in the design's table finish, legs in its frame finish.
+ */
+export function LoungeTable({ w = 1.4, d = 0.75, h = 0.38, solid = false, round = false }: { w?: number; d?: number; h?: number; solid?: boolean; round?: boolean }) {
+  if (round)
+    return (
+      <group>
+        <Cyl rt={w / 2} h={0.05} p={[0, h - 0.025, 0]} m="livingTable" seg={64} />
+        <Cyl rt={0.13} rb={0.22} h={h - 0.05} p={[0, (h - 0.05) / 2, 0]} m="livingTable" seg={48} />
+        <Cyl rt={0.12} rb={0.07} h={0.09} p={[0.12, h + 0.045, -0.1]} m="ceramic" />
+        <P s={[0.3, 0.05, 0.22]} p={[-0.15, h + 0.025, 0.12]} r={[0, 0.4, 0]} m="linen" rad={0.005} />
+      </group>
+    )
+  const legs = !solid && [-1, 1].flatMap((sx) => [-1, 1].map((sz) => [sx * (w / 2 - 0.08), sz * (d / 2 - 0.08)] as const))
+  return (
+    <group>
+      {solid ? <P s={[w, h, d]} p={[0, h / 2, 0]} m="livingTable" rad={0.012} /> : <P s={[w, 0.04, d]} p={[0, h - 0.02, 0]} m="livingTable" rad={0.008} />}
+      {legs && legs.map(([x, z], i) => <P key={i} s={[0.04, h - 0.04, 0.04]} p={[x, (h - 0.04) / 2, z]} m="livingFrame" rad={0.006} />)}
+      <P s={[0.34, 0.05, 0.25]} p={[-w / 4, h + 0.025, 0]} r={[0, 0.25, 0]} m="linen" rad={0.005} />
+      <P s={[0.3, 0.04, 0.22]} p={[-w / 4, h + 0.07, 0]} r={[0, 0.1, 0]} m="walnutWood" rad={0.005} />
+      <Cyl rt={0.1} rb={0.06} h={0.1} p={[w / 4, h + 0.05, 0.05]} m="ceramic" />
+    </group>
+  )
+}
+
+/** Tripod floor lamp with a glowing drum shade; legs in the design's frame finish. */
+export function FloorLamp({ height = 1.55 }: { height?: number }) {
+  const spread = 0.24
+  return (
+    <group>
+      {[0, 1, 2].map((i) => {
+        const a = (i / 3) * Math.PI * 2
+        const x = Math.sin(a) * spread * 0.5
+        const z = Math.cos(a) * spread * 0.5
+        const tilt = Math.atan2(spread * 0.5, height - 0.2)
+        return <Cyl key={i} rt={0.012} h={height - 0.15} p={[x, (height - 0.15) / 2, z]} r={[Math.cos(a) * tilt, 0, -Math.sin(a) * tilt]} m="livingFrame" seg={8} />
+      })}
+      <mesh position={[0, height, 0]} material={mat('paper')}>
+        <cylinderGeometry args={[0.2, 0.24, 0.32, 40, 1, true]} />
+      </mesh>
+      <mesh position={[0, height - 0.15, 0]} rotation={[Math.PI / 2, 0, 0]} material={mat('lampGlow')}>
+        <circleGeometry args={[0.2, 32]} />
+      </mesh>
+    </group>
+  )
+}

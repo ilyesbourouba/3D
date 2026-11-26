@@ -1,4 +1,6 @@
 import * as THREE from 'three'
+import { CONTEMPORARY_HOTSPOTS } from '../../data/livingLayouts'
+import { useAppStore } from '../../store/useAppStore'
 import { cameraColliders } from '../camera/colliders'
 
 /**
@@ -21,6 +23,12 @@ export function registerHotspotTarget(id: string, obj: THREE.Object3D | null) {
   targets.set(id, list)
 }
 
+function inScene(o: THREE.Object3D) {
+  let p: THREE.Object3D | null = o
+  while (p.parent) p = p.parent
+  return (p as THREE.Scene).isScene === true
+}
+
 export function setPickCamera(c: THREE.Camera) {
   camera = c
 }
@@ -41,8 +49,11 @@ export function pickHotspot(x: number, y: number): string | null {
   raycaster.near = 0.05
   raycaster.far = PICK_DISTANCE
   let best: { id: string; d: number } | null = null
+  const contemporary = useAppStore.getState().livingStyle === 'contemporary'
   for (const [id, objs] of targets) {
+    if (!contemporary && CONTEMPORARY_HOTSPOTS.has(id)) continue // that piece is not in the room now
     for (const o of objs) {
+      if (!inScene(o)) continue // removed with a previous living room design
       const hit = raycaster.intersectObject(o, true)[0]
       if (hit && (!best || hit.distance < best.d)) best = { id, d: hit.distance }
     }

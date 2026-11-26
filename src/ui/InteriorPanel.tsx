@@ -2,52 +2,22 @@ import { HOUSE } from '../data/house'
 import { useAppStore } from '../store/useAppStore'
 import { IconArrowLeft, IconDrag } from './icons'
 import { LivingDesignPanel } from './LivingDesignPanel'
-import { usePointerLocked } from './WalkLayer'
 
 const isTouch = () => typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches
 
-function Key({ children }: { children: string }) {
-  return <kbd className="inline-grid h-5 min-w-5 place-items-center rounded border border-bone/30 px-1 font-sans text-[10px] text-bone/85">{children}</kbd>
-}
-
-/** Subtle control guide for the current mode and device. */
+/** Subtle control guide for the orbit camera. */
 function ControlGuide() {
-  const navMode = useAppStore((s) => s.navMode)
-  const locked = usePointerLocked()
   const touch = isTouch()
-  let content
-  if (navMode === 'orbit') {
-    content = (
-      <>
-        <IconDrag className="text-gold-soft" /> {touch ? 'Drag to orbit · pinch to zoom' : 'Drag to orbit · scroll to zoom'}
-      </>
-    )
-  } else if (touch) {
-    content = <>Left thumb to walk · drag to look</>
-  } else {
-    content = (
-      <span className="flex items-center gap-1.5">
-        <Key>W</Key>
-        <Key>A</Key>
-        <Key>S</Key>
-        <Key>D</Key>
-        <span className="ml-1">move</span>
-        <span className="mx-1 text-bone/30">·</span>
-        <Key>⇧</Key>
-        <span>run</span>
-        <span className="mx-1 text-bone/30">·</span>
-        <span>{locked ? 'Esc to release mouse' : 'click to look with the mouse'}</span>
-      </span>
-    )
-  }
-  return <div className="glass-panel hidden items-center gap-3 rounded-full px-5 py-3 text-[11px] tracking-[0.08em] text-bone/75 lg:flex">{content}</div>
+  return (
+    <div className="glass-panel hidden items-center gap-3 rounded-full px-5 py-3 text-[11px] tracking-[0.08em] text-bone/75 lg:flex">
+      <IconDrag className="text-gold-soft" /> {touch ? 'Drag to look · pinch to zoom · two fingers to move' : 'Drag to look · scroll to zoom · right-drag to move'}
+    </div>
+  )
 }
 
-/** Room caption, "Exterior" and walk/orbit toggle while inside the house. */
+/** Room caption, "Exterior" and (in the living room) the design controls while inside the house. */
 export function InteriorPanel() {
   const exitHouse = useAppStore((s) => s.exitHouse)
-  const navMode = useAppStore((s) => s.navMode)
-  const setNavMode = useAppStore((s) => s.setNavMode)
   const roomId = useAppStore((s) => s.currentRoomId)
   const room = HOUSE.rooms.find((r) => r.id === roomId)
   const level = room ? HOUSE.levels[room.level] : null
@@ -73,19 +43,6 @@ export function InteriorPanel() {
             <IconArrowLeft className="transition-transform group-hover:-translate-x-1" />
             Exterior
           </button>
-          <div className="glass-panel inline-flex rounded-full p-1" role="radiogroup" aria-label="Camera mode">
-            {(['orbit', 'walk'] as const).map((m) => (
-              <button
-                key={m}
-                role="radio"
-                aria-checked={navMode === m}
-                onClick={() => setNavMode(m)}
-                className={`rounded-full px-4 py-2 text-[10px] tracking-[0.25em] uppercase transition-colors ${navMode === m ? 'bg-bone/90 text-ink' : 'text-bone/75 hover:text-bone'}`}
-              >
-                {m === 'walk' ? 'Walk' : 'Orbit'}
-              </button>
-            ))}
-          </div>
           {roomId === 'living' && <LivingDesignPanel />}
         </div>
         <ControlGuide />

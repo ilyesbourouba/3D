@@ -28,7 +28,10 @@ interface AppState {
   exitAfterTravel: boolean
   /** Full-screen fade used to mask camera cuts between rooms. */
   fading: boolean
+  /** Always 'orbit' (walking was removed); kept so existing checks stay simple. */
   navMode: NavMode
+  /** Bumped whenever the visitor is placed at a new spot inside; the orbit view re-centres on it. */
+  poseVersion: number
   /** Hotspot under the pointer / crosshair, and the one whose info panel is open. */
   hoveredHotspot: string | null
   activeHotspot: string | null
@@ -136,6 +139,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   exitAfterTravel: false,
   fading: false,
   navMode: 'orbit',
+  poseVersion: 0,
   hoveredHotspot: null,
   activeHotspot: null,
   travelTo: null,
@@ -170,13 +174,13 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
   goToRoom: (id) => {
     const s = get()
-    // from outside: fly in first, then walk to the room
+    // from outside: fly in first, then cut to the room
     if (s.phase === 'exterior') {
       set({ travelAfterEnter: id === 'hall' ? null : id, phase: 'entering' })
       return
     }
     if (s.phase !== 'interior' || s.pendingRoomId || (s.currentRoomId === id && !s.travelTo)) return
-    set({ travelTo: id, navMode: 'walk', activeHotspot: null, hoveredHotspot: null })
+    set({ pendingRoomId: id, activeHotspot: null, hoveredHotspot: null })
   },
   skipTravel: () => {
     const t = get().travelTo

@@ -8,7 +8,7 @@ import { createAutopilot, stepAutopilot, type Autopilot } from './autopilot'
 import { stairHeight } from './collision'
 import { findPath, warmNavGrid } from './navGrid'
 import { EYE_HEIGHT, player, playerLevel } from './playerState'
-import { installKeyboard, resetLook, walkInput } from './walkInput'
+import { resetLook, walkInput } from './walkInput'
 import { stepWalker, WALK_SPEED } from './walkPhysics'
 
 /**
@@ -64,10 +64,9 @@ export function WalkController() {
     setPose(HALL.position, HALL.target)
     resetLook()
     const st = useAppStore.getState()
-    // orbit is the default way to look around; walk only while being guided to a room
-    if (st.travelAfterEnter) useAppStore.setState({ travelTo: st.travelAfterEnter, travelAfterEnter: null, navMode: 'walk' })
-    else useAppStore.setState({ navMode: 'orbit' })
-    return installKeyboard()
+    // orbit is the only camera mode inside; a room picked from outside is reached with a cut
+    useAppStore.setState((s) => ({ poseVersion: s.poseVersion + 1 }))
+    if (st.travelAfterEnter) useAppStore.setState({ pendingRoomId: st.travelAfterEnter, travelAfterEnter: null })
   }, [phase])
   useEffect(() => {
     const id = setTimeout(warmNavGrid, 1500)
@@ -99,7 +98,7 @@ export function WalkController() {
       const pose = roomPose(pendingRoomId)
       if (pose) setPose(pose[0], pose[1])
       const exit = useAppStore.getState().exitAfterTravel
-      useAppStore.setState({ currentRoomId: pendingRoomId, pendingRoomId: null, exitAfterTravel: false, navMode: exit ? 'walk' : 'orbit' })
+      useAppStore.setState((s) => ({ currentRoomId: pendingRoomId, pendingRoomId: null, exitAfterTravel: false, poseVersion: s.poseVersion + 1 }))
       applyCamera(camera, 0) // camera at the new pose before the veil lifts (and for the exit flight)
       setTimeout(() => {
         useAppStore.getState().setFading(false)
@@ -132,7 +131,7 @@ export function WalkController() {
         const status = stepAutopilot(player, ap, dt)
         if (status === 'arrived') {
           pilot.current = null
-          useAppStore.setState({ currentRoomId: st.travelTo, travelTo: null, navMode: 'orbit' })
+          useAppStore.setState({ currentRoomId: st.travelTo, travelTo: null })
         } else if (status === 'stuck') {
           pilot.current = null
           st.skipTravel()

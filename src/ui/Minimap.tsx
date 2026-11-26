@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { FURNITURE, footprintAABB } from '../data/furniture'
 import { HOUSE, LEVELS } from '../data/house'
+import { LIVING_LAYOUTS } from '../data/livingLayouts'
 import type { LevelId, Wall } from '../data/types'
 import { useAppStore } from '../store/useAppStore'
 import { player, playerLevel } from '../three/walk/playerState'
@@ -53,7 +54,13 @@ export function Minimap({ level, onPick }: { level: LevelId; onPick?: (roomId: s
 
   const walls = useMemo(() => wallPieces(level), [level])
   const rooms = useMemo(() => HOUSE.rooms.filter((r) => r.level === level), [level])
-  const furniture = useMemo(() => FURNITURE.filter((f) => f.level === level && f.collide).map(footprintAABB).filter(Boolean), [level])
+  const livingStyle = useAppStore((s) => s.livingStyle)
+  const furniture = useMemo(() => {
+    // living room: show the design in use instead of the default one
+    const contemporary = new Set(LIVING_LAYOUTS.contemporary.map((p) => p.id))
+    const all = [...FURNITURE.filter((f) => !contemporary.has(f.id)), ...LIVING_LAYOUTS[livingStyle]]
+    return all.filter((f) => f.level === level && f.collide).map(footprintAABB).filter(Boolean)
+  }, [level, livingStyle])
   const stair = HOUSE.stairs[0].rect
 
   // player marker follows the live pose without re-rendering React

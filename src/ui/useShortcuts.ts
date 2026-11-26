@@ -6,7 +6,7 @@ export function toggleFullscreen() {
   else document.documentElement.requestFullscreen?.().catch(() => undefined)
 }
 
-/** Global keyboard shortcuts: M map, V view mode, F fullscreen, H / ? help, Esc close. */
+/** Global keyboard shortcuts: M map, F fullscreen, H / ? help, Esc close. */
 export function useShortcuts() {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -17,9 +17,6 @@ export function useShortcuts() {
       switch (e.code) {
         case 'KeyM':
           s.setNavOpen(!s.navOpen)
-          break
-        case 'KeyV':
-          if (s.phase === 'interior') s.setNavMode(s.navMode === 'walk' ? 'orbit' : 'walk')
           break
         case 'KeyF':
           toggleFullscreen()
