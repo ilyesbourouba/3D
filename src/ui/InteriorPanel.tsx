@@ -73,7 +73,7 @@ export function InteriorPanel() {
             Exterior
           </button>
           <div className="glass-panel inline-flex rounded-full p-1" role="radiogroup" aria-label="Camera mode">
-            {(['walk', 'orbit'] as const).map((m) => (
+            {(['orbit', 'walk'] as const).map((m) => (
               <button
                 key={m}
                 role="radio"

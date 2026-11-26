@@ -50,7 +50,7 @@ export function HelpOverlay() {
             <Row keys={['Click']} label="Capture mouse to look" />
             <Row keys={['Esc']} label="Release mouse / close" />
             <Row keys={['M']} label="Map & rooms" />
-            <Row keys={['V']} label="Walk ⇄ orbit view" />
+            <Row keys={['V']} label="Orbit ⇄ walk view" />
             <Row keys={['F']} label="Fullscreen" />
             <Row keys={['H']} label="This guide" />
           </section>

@@ -64,7 +64,9 @@ export function WalkController() {
     setPose(HALL.position, HALL.target)
     resetLook()
     const st = useAppStore.getState()
-    if (st.travelAfterEnter) useAppStore.setState({ travelTo: st.travelAfterEnter, travelAfterEnter: null })
+    // orbit is the default way to look around; walk only while being guided to a room
+    if (st.travelAfterEnter) useAppStore.setState({ travelTo: st.travelAfterEnter, travelAfterEnter: null, navMode: 'walk' })
+    else useAppStore.setState({ navMode: 'orbit' })
     return installKeyboard()
   }, [phase])
   useEffect(() => {
@@ -97,7 +99,7 @@ export function WalkController() {
       const pose = roomPose(pendingRoomId)
       if (pose) setPose(pose[0], pose[1])
       const exit = useAppStore.getState().exitAfterTravel
-      useAppStore.setState({ currentRoomId: pendingRoomId, pendingRoomId: null, exitAfterTravel: false, navMode: 'walk' })
+      useAppStore.setState({ currentRoomId: pendingRoomId, pendingRoomId: null, exitAfterTravel: false, navMode: exit ? 'walk' : 'orbit' })
       applyCamera(camera, 0) // camera at the new pose before the veil lifts (and for the exit flight)
       setTimeout(() => {
         useAppStore.getState().setFading(false)
@@ -130,7 +132,7 @@ export function WalkController() {
         const status = stepAutopilot(player, ap, dt)
         if (status === 'arrived') {
           pilot.current = null
-          useAppStore.setState({ currentRoomId: st.travelTo, travelTo: null })
+          useAppStore.setState({ currentRoomId: st.travelTo, travelTo: null, navMode: 'orbit' })
         } else if (status === 'stuck') {
           pilot.current = null
           st.skipTravel()

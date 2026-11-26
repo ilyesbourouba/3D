@@ -105,7 +105,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   pendingRoomId: null,
   exitAfterTravel: false,
   fading: false,
-  navMode: 'walk',
+  navMode: 'orbit',
   hoveredHotspot: null,
   activeHotspot: null,
   travelTo: null,
