@@ -16,7 +16,15 @@ export const FINISHES: Finish[] = [
   // Entrance hall — walnut panelled wall facing the stair
   { axis: 'x', plane: -1.925, dir: 1, from: -6.85, to: -3.5, y0: 0, y1: 3.3, mat: 'walnut' },
   // Living room — travertine fireplace wall
-  { axis: 'x', plane: -10.85, dir: 1, from: -1.35, to: 4.45, y0: 0, y1: 3.3, mat: 'stone', thickness: 0.06 },
+  { axis: 'x', plane: -10.85, dir: 1, from: -1.35, to: 4.45, y0: 0, y1: 3.3, mat: 'livingFeature', thickness: 0.06 },
+  // Living room — paintable plaster (colour picked by the visitor)
+  ...([
+    ['x', -10.85, -1.425, -1.35, 0, 3.3], // west wall, beside the fireplace wall
+    ['x', -10.85, 4.45, 6.85, 0, 3.3],
+    ['z', -1.425, -10.85, -10.5, 0, 3.3], // north wall, around the glass partition to the office
+    ['z', -1.425, -5.5, -5.075, 0, 3.3],
+    ['z', -1.425, -10.5, -5.5, 2.7, 3.3],
+  ] as const).map(([axis, plane, from, to, y0, y1]): Finish => ({ axis, plane, dir: 1, from, to, y0, y1, mat: 'livingPaint', thickness: 0.004 })),
   // Master bedroom — walnut headboard wall (bed faces the west window)
   { axis: 'x', plane: -3.075, dir: -1, from: 1.5, to: 6.6, y0: 0 + L1, y1: 3.3 + L1, mat: 'walnut' },
   // Bedroom two — headboard wall

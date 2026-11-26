@@ -2,6 +2,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { lazy, Suspense, useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { useAppStore } from '../store/useAppStore'
+import { applyLivingDesign } from './materials/livingDesign'
 import { FrontDoor } from './architecture/FrontDoor'
 import { HouseShell } from './architecture/HouseShell'
 import { CameraRig } from './camera/CameraRig'
@@ -54,6 +55,14 @@ function ReadySignal() {
   return null
 }
 
+/** Keeps the living room materials in step with the visitor's style and wall colour. */
+function LivingDesignSync() {
+  const style = useAppStore((s) => s.livingStyle)
+  const wall = useAppStore((s) => s.livingWall)
+  useEffect(() => applyLivingDesign(style, wall), [style, wall])
+  return null
+}
+
 export function Experience() {
   const quality = useAppStore((s) => s.quality)
   const sceneReady = useAppStore((s) => s.sceneReady)
@@ -86,6 +95,7 @@ export function Experience() {
         <WalkController />
         <PostFX />
         <ReadySignal />
+        <LivingDesignSync />
         {sceneReady && (
           <Suspense fallback={null}>
             <InteriorContent />

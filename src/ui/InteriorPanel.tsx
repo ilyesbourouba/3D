@@ -1,6 +1,7 @@
 import { HOUSE } from '../data/house'
 import { useAppStore } from '../store/useAppStore'
 import { IconArrowLeft, IconDrag } from './icons'
+import { LivingDesignPanel } from './LivingDesignPanel'
 import { usePointerLocked } from './WalkLayer'
 
 const isTouch = () => typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches
@@ -39,7 +40,7 @@ function ControlGuide() {
       </span>
     )
   }
-  return <div className="glass-panel hidden items-center gap-3 rounded-full px-5 py-3 text-[11px] tracking-[0.08em] text-bone/75 sm:flex">{content}</div>
+  return <div className="glass-panel hidden items-center gap-3 rounded-full px-5 py-3 text-[11px] tracking-[0.08em] text-bone/75 lg:flex">{content}</div>
 }
 
 /** Room caption, "Exterior" and walk/orbit toggle while inside the house. */
@@ -85,6 +86,7 @@ export function InteriorPanel() {
               </button>
             ))}
           </div>
+          {roomId === 'living' && <LivingDesignPanel />}
         </div>
         <ControlGuide />
       </div>

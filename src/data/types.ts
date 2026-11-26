@@ -19,6 +19,8 @@ export type MaterialKey =
   | 'travertine' // stone floor tiles
   | 'marble'
   | 'walnut'
+  | 'livingPaint' // living room walls, colour chosen by the visitor
+  | 'livingFeature' // living room fireplace wall, finish set by the chosen style
   // details
   | 'frame' // black anodised window frames
   | 'metal' // bronze / dark steel

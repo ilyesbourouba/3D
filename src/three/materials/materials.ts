@@ -41,6 +41,12 @@ export type ExtraKey =
   | 'lampGlow'
   | 'rug'
   | 'paper'
+  // living room, restyled by the visitor (see livingDesign.ts)
+  | 'livingSofa'
+  | 'livingChair'
+  | 'livingFrame'
+  | 'livingTable'
+  | 'livingRug'
 
 export type AnyKey = MaterialKey | ExtraKey
 
@@ -148,6 +154,9 @@ export function initMaterials(quality: Quality) {
     // polished but not mirror-like: the roughness map (0.12–0.2) is scaled up so floors don't mirror the sky
     marble: std('marble', { roughness: 1.9, envMapIntensity: 0.6 }),
     walnut: std('walnut', { roughness: 0.5 }),
+    // living room: separate instances so restyling never touches other rooms (initial look set by applyLivingDesign)
+    livingPaint: new THREE.MeshPhysicalMaterial({ envMapIntensity: 0.6 }),
+    livingFeature: new THREE.MeshPhysicalMaterial(),
     // details
     frame: new THREE.MeshStandardMaterial({ color: '#1a1a1c', metalness: 0.6, roughness: 0.38 }),
     metal: new THREE.MeshStandardMaterial({ color: '#8a6d4c', metalness: 1, roughness: 0.3 }),
@@ -189,6 +198,11 @@ export function initMaterials(quality: Quality) {
     darkGlass: new THREE.MeshPhysicalMaterial({ color: '#101214', metalness: 0.2, roughness: 0.08, clearcoat: 1 }),
     lampGlow: new THREE.MeshStandardMaterial({ color: '#fff4e2', emissive: '#ffd8a0', emissiveIntensity: 2.4, roughness: 0.6 }),
     rug: std('rug', { roughness: 1 }),
+    livingSofa: new THREE.MeshPhysicalMaterial(),
+    livingChair: new THREE.MeshPhysicalMaterial(),
+    livingFrame: new THREE.MeshPhysicalMaterial(),
+    livingTable: new THREE.MeshPhysicalMaterial({ envMapIntensity: 0.75 }),
+    livingRug: new THREE.MeshPhysicalMaterial(),
     paper: new THREE.MeshStandardMaterial({ color: '#f1ebe0', emissive: '#ffcf8a', emissiveIntensity: 0.35, roughness: 0.9, side: THREE.DoubleSide }),
   }
   const [px0, pz0, px1, pz1] = POOL.rect

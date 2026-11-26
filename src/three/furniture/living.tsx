@@ -9,23 +9,24 @@ import { Cyl, G, P, Sphere } from './parts'
 /* ------------------------------------------------------------------ sofa */
 
 /** Low modular sofa in bouclé with deep seat and loose back cushions. */
-export function Sofa({ length = 3.4, depth = 1.05, arms = true }: { length?: number; depth?: number; arms?: boolean }) {
+export function Sofa({ length = 3.4, depth = 1.05, arms = true, living = false }: { length?: number; depth?: number; arms?: boolean; living?: boolean }) {
+  const fab = living ? 'livingSofa' : 'boucle'
   const n = Math.max(1, Math.round(length / 1.05))
   const inner = length - (arms ? 0.36 : 0.04)
   const w = inner / n
   return (
     <group>
       <P s={[length - 0.12, 0.07, depth - 0.12]} p={[0, 0.035, 0]} m="blackMetal" rad={0} />
-      <P s={[length, 0.26, depth]} p={[0, 0.2, 0]} m="boucle" rad={0.05} />
-      <P s={[length, 0.44, 0.2]} p={[0, 0.55, -depth / 2 + 0.1]} m="boucle" rad={0.06} />
+      <P s={[length, 0.26, depth]} p={[0, 0.2, 0]} m={fab} rad={0.05} />
+      <P s={[length, 0.44, 0.2]} p={[0, 0.55, -depth / 2 + 0.1]} m={fab} rad={0.06} />
       {arms &&
-        [-1, 1].map((s) => <P key={s} s={[0.18, 0.3, depth]} p={[s * (length / 2 - 0.09), 0.48, 0]} m="boucle" rad={0.07} />)}
+        [-1, 1].map((s) => <P key={s} s={[0.18, 0.3, depth]} p={[s * (length / 2 - 0.09), 0.48, 0]} m={fab} rad={0.07} />)}
       {Array.from({ length: n }, (_, i) => {
         const x = -inner / 2 + w * (i + 0.5)
         return (
           <G key={i} p={[x, 0, 0]}>
-            <P s={[w - 0.015, 0.16, depth - 0.3]} p={[0, 0.41, 0.12]} m="boucle" rad={0.07} />
-            <P s={[w - 0.03, 0.5, 0.22]} p={[0, 0.66, -depth / 2 + 0.28]} r={[-0.16, 0, 0]} m="boucle" rad={0.1} />
+            <P s={[w - 0.015, 0.16, depth - 0.3]} p={[0, 0.41, 0.12]} m={fab} rad={0.07} />
+            <P s={[w - 0.03, 0.5, 0.22]} p={[0, 0.66, -depth / 2 + 0.28]} r={[-0.16, 0, 0]} m={fab} rad={0.1} />
           </G>
         )
       })}
@@ -37,41 +38,45 @@ export function Sofa({ length = 3.4, depth = 1.05, arms = true }: { length?: num
 }
 
 /** Backless chaise module completing an L-shaped sofa. */
-export function Chaise({ width = 1.6, depth = 1.0 }: { width?: number; depth?: number }) {
+export function Chaise({ width = 1.6, depth = 1.0, living = false }: { width?: number; depth?: number; living?: boolean }) {
+  const fab = living ? 'livingSofa' : 'boucle'
   return (
     <group>
       <P s={[width - 0.12, 0.07, depth - 0.12]} p={[0, 0.035, 0]} m="blackMetal" rad={0} />
-      <P s={[width, 0.26, depth]} p={[0, 0.2, 0]} m="boucle" rad={0.05} />
-      <P s={[width - 0.03, 0.16, depth - 0.03]} p={[0, 0.41, 0]} m="boucle" rad={0.07} />
+      <P s={[width, 0.26, depth]} p={[0, 0.2, 0]} m={fab} rad={0.05} />
+      <P s={[width - 0.03, 0.16, depth - 0.03]} p={[0, 0.41, 0]} m={fab} rad={0.07} />
       <P s={[0.5, 0.09, 0.4]} p={[0.2, 0.53, 0.1]} r={[0, 0.4, 0]} m="linen" rad={0.03} />
     </group>
   )
 }
 
 /** Cognac leather lounge chair on a walnut frame. */
-export function Armchair() {
+export function Armchair({ living = false }: { living?: boolean }) {
+  const frame = living ? 'livingFrame' : 'walnutWood'
+  const seat = living ? 'livingChair' : 'leather'
   return (
     <group>
       {[-1, 1].map((s) => (
         <G key={s} p={[s * 0.4, 0, 0]}>
-          <P s={[0.05, 0.05, 0.78]} p={[0, 0.025, 0]} m="walnutWood" rad={0.012} />
-          <P s={[0.05, 0.5, 0.05]} p={[0, 0.27, 0.3]} m="walnutWood" rad={0.012} />
-          <P s={[0.05, 0.62, 0.05]} p={[0, 0.33, -0.3]} r={[-0.15, 0, 0]} m="walnutWood" rad={0.012} />
-          <P s={[0.07, 0.04, 0.72]} p={[0, 0.55, 0.0]} m="walnutWood" rad={0.015} />
+          <P s={[0.05, 0.05, 0.78]} p={[0, 0.025, 0]} m={frame} rad={0.012} />
+          <P s={[0.05, 0.5, 0.05]} p={[0, 0.27, 0.3]} m={frame} rad={0.012} />
+          <P s={[0.05, 0.62, 0.05]} p={[0, 0.33, -0.3]} r={[-0.15, 0, 0]} m={frame} rad={0.012} />
+          <P s={[0.07, 0.04, 0.72]} p={[0, 0.55, 0.0]} m={frame} rad={0.015} />
         </G>
       ))}
-      <P s={[0.74, 0.15, 0.68]} p={[0, 0.33, 0.04]} r={[-0.06, 0, 0]} m="leather" rad={0.06} />
-      <P s={[0.74, 0.62, 0.15]} p={[0, 0.66, -0.3]} r={[-0.24, 0, 0]} m="leather" rad={0.07} />
+      <P s={[0.74, 0.15, 0.68]} p={[0, 0.33, 0.04]} r={[-0.06, 0, 0]} m={seat} rad={0.06} />
+      <P s={[0.74, 0.62, 0.15]} p={[0, 0.66, -0.3]} r={[-0.24, 0, 0]} m={seat} rad={0.07} />
     </group>
   )
 }
 
 /** Pair of nested travertine drums with a few objects. */
-export function CoffeeTable() {
+export function CoffeeTable({ living = false }: { living?: boolean }) {
+  const top = living ? 'livingTable' : 'travertineSlab'
   return (
     <group>
-      <Cyl rt={0.6} h={0.34} p={[-0.18, 0.17, 0]} m="travertineSlab" seg={64} />
-      <Cyl rt={0.4} h={0.42} p={[0.45, 0.21, 0.22]} m="travertineSlab" seg={64} />
+      <Cyl rt={0.6} h={0.34} p={[-0.18, 0.17, 0]} m={top} seg={64} />
+      <Cyl rt={0.4} h={0.42} p={[0.45, 0.21, 0.22]} m={top} seg={64} />
       <P s={[0.32, 0.05, 0.24]} p={[-0.3, 0.365, -0.1]} r={[0, 0.3, 0]} m="linen" rad={0.005} />
       <P s={[0.28, 0.04, 0.21]} p={[-0.3, 0.41, -0.1]} r={[0, 0.2, 0]} m="walnutWood" rad={0.005} />
       <Cyl rt={0.11} rb={0.06} h={0.08} p={[0.45, 0.46, 0.22]} m="ceramic" />
@@ -117,8 +122,8 @@ export function ArcLamp({ reach = 1.5 }: { reach?: number }) {
   )
 }
 
-export function Rug({ w = 3, d = 2 }: { w?: number; d?: number }) {
-  return <P s={[w, 0.012, d]} p={[0, 0.006, 0]} m="rug" rad={0.004} shadow={false} />
+export function Rug({ w = 3, d = 2, living = false }: { w?: number; d?: number; living?: boolean }) {
+  return <P s={[w, 0.012, d]} p={[0, 0.006, 0]} m={living ? 'livingRug' : 'rug'} rad={0.004} shadow={false} />
 }
 
 /* -------------------------------------------------------------- fireplace */

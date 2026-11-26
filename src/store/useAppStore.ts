@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import type { LivingStyle, WallColorId } from '../three/materials/livingDesign'
 
 /**
  * App-wide state. 3D components read it with selectors; UI components call the actions.
@@ -39,6 +40,9 @@ interface AppState {
   navOpen: boolean
   helpOpen: boolean
   timeOfDay: TimeOfDay
+  /** Living room customisation: interior style and wall paint. */
+  livingStyle: LivingStyle
+  livingWall: WallColorId
   /** Short message shown as a toast (e.g. automatic quality change). */
   notice: string | null
 
@@ -62,6 +66,8 @@ interface AppState {
   setHelpOpen: (open: boolean) => void
   setTimeOfDay: (t: TimeOfDay) => void
   notify: (msg: string | null) => void
+  setLivingStyle: (s: LivingStyle) => void
+  setLivingWall: (c: WallColorId) => void
 }
 
 /** Visitor asked the OS to minimise motion: shorter flights, no idle drift or head bob. */
@@ -69,6 +75,30 @@ export const prefersReducedMotion = () => typeof window !== 'undefined' && !!win
 
 const QUALITY_KEY = 'aurelia.quality'
 const TIME_KEY = 'aurelia.time'
+const LIVING_KEY = 'rahmouni.living'
+
+function initialLiving(): { livingStyle: LivingStyle; livingWall: WallColorId } {
+  const fallback = { livingStyle: 'contemporary' as LivingStyle, livingWall: 'white' as WallColorId }
+  try {
+    const saved = JSON.parse(localStorage.getItem(LIVING_KEY) ?? 'null')
+    const styles: LivingStyle[] = ['contemporary', 'scandinavian', 'industrial', 'classic']
+    const walls: WallColorId[] = ['white', 'sand', 'sage', 'terracotta', 'blue', 'charcoal']
+    return {
+      livingStyle: styles.includes(saved?.livingStyle) ? saved.livingStyle : fallback.livingStyle,
+      livingWall: walls.includes(saved?.livingWall) ? saved.livingWall : fallback.livingWall,
+    }
+  } catch {
+    return fallback
+  }
+}
+
+function saveLiving(v: { livingStyle: LivingStyle; livingWall: WallColorId }) {
+  try {
+    localStorage.setItem(LIVING_KEY, JSON.stringify(v))
+  } catch {
+    /* storage unavailable */
+  }
+}
 
 function initialTime(): TimeOfDay {
   try {
@@ -114,6 +144,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   helpOpen: false,
   timeOfDay: initialTime(),
   notice: null,
+  ...initialLiving(),
 
   setLoad: (loadProgress, loadLabel) => set({ loadProgress, loadLabel }),
   setSceneReady: () => set({ sceneReady: true, phase: get().phase === 'loading' ? 'exterior' : get().phase }),
@@ -163,6 +194,14 @@ export const useAppStore = create<AppState>((set, get) => ({
     set({ timeOfDay })
   },
   notify: (notice) => set({ notice }),
+  setLivingStyle: (livingStyle) => {
+    set({ livingStyle })
+    saveLiving({ livingStyle, livingWall: get().livingWall })
+  },
+  setLivingWall: (livingWall) => {
+    set({ livingWall })
+    saveLiving({ livingStyle: get().livingStyle, livingWall })
+  },
   setFading: (fading) => set({ fading }),
   setNavMode: (navMode) => set({ navMode }),
   setHoveredHotspot: (hoveredHotspot) => {
